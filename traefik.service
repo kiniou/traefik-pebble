@@ -1,0 +1,12 @@
+[Unit]
+Description="Traefik service"
+
+[Service]
+ExecStartPre=/bin/sh -c "/usr/bin/docker network create -o 'com.docker.network.bridge.name'='traefik' traefik_webgateway || true"
+WorkingDirectory=/etc/traefik
+ExecStartPre=/usr/local/bin/docker-compose down
+ExecStart=/usr/local/bin/docker-compose up
+ExecStop=/usr/local/bin/docker-compose down
+
+[Install]
+WantedBy=default.target
