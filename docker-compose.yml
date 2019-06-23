@@ -10,9 +10,12 @@ services:
       - /etc/traefik/certs:/certs
       - /etc/traefik/certs/ca:/usr/local/share/ca-certificates:ro
     ports:
-      - 127.0.0.1:443:443
-      - 127.0.0.1:80:80
-      - 127.0.0.1:8080:8080
+      - "127.0.0.1:${TRAEFIK_PORT_HTTP:-80}:80"
+      - "::1:${TRAEFIK_PORT_HTTP:-80}:80"
+      - "127.0.0.1:${TRAEFIK_PORT_HTTPS:-443}:443"
+      - "::1:${TRAEFIK_PORT_HTTPS:-443}:443"
+      - "127.0.0.1${TRAEFIK_PORT_DASHBOARD:-8080}:8080"
+      - "::1${TRAEFIK_PORT_DASHBOARD:-8080}:8080"
     container_name: traefik
     restart: always
     labels:
@@ -25,6 +28,8 @@ services:
     volumes:
       - /etc/traefik/certs:/var/pebble/certs
       - /etc/traefik/pebble.json:/pebble.json
+    ports:
+      - "{$PEBBLE_PORT:-127.0.0.1:14000}:14000"
     environment:
       PEBBLE_VA_ALWAYS_VALID: 1
       PEBBLE_VA_NOSLEEP: 1
@@ -34,4 +39,4 @@ services:
 networks:
   default:
     external:
-      name: traefik_webgateway
+      name: traefik
