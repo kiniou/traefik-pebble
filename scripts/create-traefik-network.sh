@@ -20,5 +20,5 @@ docker network ls --format="{{.Name}}" | grep -E "^${NETWORK_NAME}$" \
 # Create a fresh new network
 docker network create \
        --attachable \
-       -o 'com.docker.network.bridge.name'='${NETWORK_NAME}' \
+       -o 'com.docker.network.bridge.name'="${NETWORK_NAME}" \
        "${NETWORK_NAME}"
