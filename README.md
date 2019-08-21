@@ -1,4 +1,4 @@
-# Traefik automatic ssl with pebble
+# Traefik automatic ssl with pebble for local web development setup
 
 This setup will spawn a ready to use Traefik container with automatic ssl generation with the simple ACME server [Pebble](https://github.com/letsencrypt/pebble)
 
