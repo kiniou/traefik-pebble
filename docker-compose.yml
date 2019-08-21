@@ -4,6 +4,8 @@ services:
   traefik:
     build: traefik.docker
     image: traefik:local
+    depends_on:
+      - pebble
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/traefik/traefik.toml:/traefik.toml
