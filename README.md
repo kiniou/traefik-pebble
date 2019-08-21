@@ -21,7 +21,7 @@ after a restart of the service.
 ```shell
 DBPATH=${HOME}/.pki/nssdb
 certutil -d sql:${DBPATH} -D -n "localhost-pebble"
-curl -sSLk https://localhost:14000/root \
+curl -sSLk https://localhost:15000/roots/0 \
 | certutil -d sql:${DBPATH} -A -n "localhost-pebble" -t CT,c,c
 ```
 
@@ -33,7 +33,7 @@ curl -sSLk https://localhost:14000/root \
 ```shell
 DBPATH=${HOME}/.mozilla/firefox/<profile_id>
 certutil -d sql:${DBPATH} -D -n "localhost-pebble"
-curl -sSLk https://localhost:14000/root \
+curl -sSLk https://localhost:15000/roots/0 \
 | certutil -d sql:${DBPATH} -A -n "localhost-pebble" -t CT,c,c
 ```
 
