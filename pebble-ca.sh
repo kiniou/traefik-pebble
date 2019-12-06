@@ -1,19 +1,18 @@
 #!/bin/sh
 set -e
+mkdir -p /etc/traefik/certs
 cd /etc/traefik/certs
+rm -rf localhost
+mkdir -p ca localhost
+export GOPATH=/opt/go
 
-if [ ! -f "ca/cert.pem" ]; then
-    mkdir -p ca
-    openssl genrsa -out ca/key.pem 4096
-    openssl req -x509 -subj "/C=US/ST=CA/O=MyOrg, Inc./CN=pebble CA" -new -nodes -key ca/key.pem -sha256 -days 36500 -out ca/cert.pem
-fi
+[ ! -f /opt/go/bin/minica ] && go get github.com/jsha/minica
 
-if [ ! -f "localhost/cert.pem" ]; then
-    mkdir -p localhost
-    openssl genrsa -out localhost/key.pem 2048
-    openssl req -new -sha256 -key localhost/key.pem \
-            -subj "/C=US/ST=CA/O=MyOrg, Inc./CN=pebble" -out localhost/request.csr
-    openssl x509 -req -in localhost/request.csr \
-            -CA ca/cert.pem -CAkey ca/key.pem \
-            -CAcreateserial -out localhost/cert.pem -days 3650 -sha256
-fi
+/opt/go/bin/minica \
+    -ca-cert ca/cert.pem \
+    -ca-key ca/cert.key \
+    -domains localhost,pebble \
+    -ip-addresses 127.0.0.1 \
+    || true
+
+chmod -R go+r ca localhost
