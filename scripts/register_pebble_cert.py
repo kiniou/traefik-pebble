@@ -72,11 +72,13 @@ def _register_firefox(**kwargs):
 
 
 @click.command()
-@click.option('-d', '--debug/--no-debug', help="Debug logging", default=False, show_default=True)
+@click.option('-d', '--debug/--no-debug', help="Debug logging",
+              default=False, show_default=True)
 @click.option('-t', '--target',
               type=click.Choice(['firefox', 'chrome']),
               default='chrome', show_default=True)
-@click.option('-p', '--profile', metavar="PROFILE", default="default", show_default=True)
+@click.option('-p', '--profile', metavar="PROFILE",
+              default="default", show_default=True)
 @click.pass_context
 def main(ctx, debug, target, profile):
     if debug:
