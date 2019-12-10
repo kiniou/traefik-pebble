@@ -24,6 +24,7 @@ services:
       - traefik.enable=false
 
   unbound:
+    container_name: unbound
     build: unbound.docker
     image: unbound:local
     ports:
