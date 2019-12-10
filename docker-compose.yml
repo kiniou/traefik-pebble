@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 
 services:
   traefik:
@@ -8,9 +8,9 @@ services:
       - pebble
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /etc/traefik/traefik.toml:/traefik.toml
-      - /etc/traefik/certs:/certs
-      - /etc/traefik/certs/ca:/usr/local/share/ca-certificates:ro
+      - ./traefik.toml:/etc/traefik/traefik.toml
+      - ./certs:/certs
+      - ./certs/ca:/usr/local/share/ca-certificates:ro
     ports:
       - "127.0.0.1:${TRAEFIK_PORT_HTTP:-80}:80"
       - "::1:${TRAEFIK_PORT_HTTP:-80}:80"
@@ -28,8 +28,8 @@ services:
     container_name: pebble
     restart: always
     volumes:
-      - /etc/traefik/certs:/var/pebble/certs
-      - /etc/traefik/pebble.json:/pebble.json
+      - ./certs:/var/pebble/certs
+      - ./pebble.json:/pebble.json
     ports:
       - "${PEBBLE_PORT:-127.0.0.1:14000}:14000"
       - "${PEBBLE_MGMT_PORT:-127.0.0.1:15000}:15000"
