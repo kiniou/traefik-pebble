@@ -27,6 +27,8 @@ def _get_intermediate_certificate():
     log.debug("response data: %s", response.text)
     assert response.status_code == 200,\
         "Could not fetch intermediate certificate from Pebble"
+    with open('pebble.crt', 'w') as certfile:
+        certfile.write(response.text)
     return response.text
 
 
