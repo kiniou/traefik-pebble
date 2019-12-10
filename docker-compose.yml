@@ -27,6 +27,12 @@ services:
       # traefik.http.routers.https-redirect.rule: HostRegexp(`{any:.*}`)
       traefik.http.middlewares.https-redirect.redirectscheme.scheme: https
 
+  unbound:
+    build: unbound.docker
+    image: unbound:local
+    ports:
+      - "127.0.2.53:53:53/udp"
+
   pebble:
     image: letsencrypt/pebble:latest
     container_name: pebble
