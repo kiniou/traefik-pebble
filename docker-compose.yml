@@ -23,9 +23,13 @@ services:
     labels:
       traefik.enable: true
       ## Uncomment this for permanent redirect from http:// to https://
-      # traefik.http.routers.https-redirect.entrypoints: web
-      # traefik.http.routers.https-redirect.rule: HostRegexp(`{any:.*}`)
-      traefik.http.middlewares.https-redirect.redirectscheme.scheme: https
+      ## Also make sure your container is registered on web-secure entrypoint
+      ## otherwise, you request will fall into whoami container.
+      # traefik.http.routers.traefik.entrypoints: web
+      # traefik.http.routers.traefik.rule: HostRegexp(`{any:.*}`)
+      # traefik.http.routers.traefik.priority: 999
+      # traefik.http.routers.traefik.middlewares: traefik-redirect
+      # traefik.http.middlewares.traefik-redirect.redirectscheme.scheme: https
 
   unbound:
     container_name: unbound
@@ -57,8 +61,12 @@ services:
     labels:
       traefik.http.routers.whoami.entrypoints: web
       traefik.http.routers.whoami.rule: HostRegexp(`{any:.*}`)
+      traefik.http.routers.whoami.priority: 1
+      traefik.http.routers.whoami.middlewares: whoami-redirectscheme
+      traefik.http.middlewares.whoami-redirectscheme.redirectscheme.scheme: https
       traefik.http.routers.whoami-https.entrypoints: web-secure
-      traefik.http.routers.whoami-https.rule: Host(`whoami.localhost`)
+      traefik.http.routers.whoami-https.rule: HostRegexp(`{any:.*}`)
+      traefik.http.routers.whoami-https.priority: 1
       traefik.http.routers.whoami-https.tls.certresolver: letsencrypt
 
 networks:
