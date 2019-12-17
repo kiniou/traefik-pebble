@@ -1,4 +1,4 @@
-FROM traefik:alpine
+FROM traefik:1.7-alpine
 
 ADD entrypoint.sh /custom-entrypoint.sh
 
