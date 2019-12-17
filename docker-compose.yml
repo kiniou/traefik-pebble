@@ -23,12 +23,13 @@ services:
     labels:
       - traefik.enable=false
 
-  unbound:
-    container_name: unbound
-    build: unbound.docker
-    image: unbound:local
-    ports:
-      - "127.0.2.53:53:53/udp"
+  # unbound:
+  #   container_name: unbound
+  #   build: unbound.docker
+  #   image: unbound:local
+  #   ports:
+  #     - "127.0.2.53:53:53/udp"
+  #     - "127.0.2.53:53:53/tcp"
 
   pebble:
     image: letsencrypt/pebble:latest
