@@ -47,6 +47,11 @@ services:
       PEBBLE_WFE_NONCEREJECT: 0
     command: pebble -config /pebble.json
 
+  whoami:
+    image: containous/whoami:latest
+    container_name: whoami
+    restart: always
+
 networks:
   default:
     external:
