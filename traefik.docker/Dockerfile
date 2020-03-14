@@ -1,4 +1,4 @@
-FROM traefik:cantal
+FROM traefik:2.2
 
 ADD entrypoint.sh /custom-entrypoint.sh
 
