@@ -31,12 +31,13 @@ services:
       # traefik.http.routers.traefik.middlewares: traefik-redirect
       # traefik.http.middlewares.traefik-redirect.redirectscheme.scheme: https
 
-  unbound:
-    container_name: unbound
-    build: unbound.docker
-    image: unbound:local
-    ports:
-      - "127.0.2.53:53:53/udp"
+  # unbound:
+  #   container_name: unbound
+  #   build: unbound.docker
+  #   image: unbound:local
+  #   ports:
+  #     - "127.0.2.53:53:53/udp"
+  #     - "127.0.2.53:53:53/tcp"
 
   pebble:
     image: letsencrypt/pebble:latest
