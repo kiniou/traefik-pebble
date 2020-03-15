@@ -17,11 +17,11 @@
   [http.middlewares.redirect.redirectScheme]
     scheme = "https"
 
-[certificatesResolvers.letsencrypt.acme]
+[certificatesResolvers.pebble.acme]
   email = "test@docker.localhost"
   storage = "/var/run/acme.json"
   caServer = "https://pebble:14000/dir"
-  [certificatesResolvers.letsencrypt.acme.httpChallenge]
+  [certificatesResolvers.pebble.acme.httpChallenge]
     # used during the challenge
     entryPoint = "web"
 
