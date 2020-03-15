@@ -46,6 +46,8 @@ services:
       PEBBLE_VA_NOSLEEP: 1
       PEBBLE_WFE_NONCEREJECT: 0
     command: pebble -config /pebble.json
+    labels:
+      - traefik.enable=false
 
   whoami:
     image: containous/whoami:latest
