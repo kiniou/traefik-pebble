@@ -11,7 +11,8 @@
     address = ":80"
   [entryPoints.web-secure]
     address = ":443"
-
+  [entryPoints.ssh]
+    address = ":222"
 
 [http.middlewares]
   [http.middlewares.redirect.redirectScheme]
