@@ -10,7 +10,7 @@ daiquiri.setup()
 log = logging.getLogger(__name__)
 log_requests = logging.getLogger()
 log_requests.setLevel(logging.DEBUG)
-pebble_cert_nickname = "localhost-pebble"
+cert_nickname = "local-dev"
 browsers_functions = {}
 
 
@@ -19,7 +19,7 @@ def register_browser(fn):
     return fn
 
 
-def _get_intermediate_certificate():
+def _get_pebble_certificate():
     log.debug("fetch intermediate certificate from Pebble")
     response = requests.get("https://localhost:15000/roots/0", verify=False)
     log.debug("request: %s", response.request.url)
@@ -49,18 +49,25 @@ def _run(*args, **kwargs):
 
 @register_browser
 def _register_chrome(**kwargs):
-    cert_txt = _get_intermediate_certificate()
-    log.debug("Register Pebble in Chrome")
+    cert_path_arg = kwargs.get('cert_path')
+    log.debug(cert_path_arg)
+    if cert_path_arg:
+        cert_path = Path(cert_path_arg)
+        with cert_path.open() as f:
+            cert_txt = f.read()
+    else:
+        cert_txt = _get_pebble_certificate()
+    log.debug("Register Certificate in Chrome")
     DB_PATH = Path('~/.pki/nssdb').expanduser()
     log.debug("DB_PATH: %s", DB_PATH)
     db_name = 'sql:{}'.format(DB_PATH)
     certutil_cmd = ['/usr/bin/env', 'certutil', '-d', db_name]
-    _run(certutil_cmd + ['-D', '-n', pebble_cert_nickname])
+    _run(certutil_cmd + ['-D', '-n', cert_nickname])
     _run(certutil_cmd +
-         ['-A', '-n', pebble_cert_nickname, '-t', 'CT,c,c'],
+         ['-A', '-n', cert_nickname, '-t', 'CT,c,c'],
          input=cert_txt.encode())
     _run(certutil_cmd +
-         ['-L', '-n', pebble_cert_nickname])
+         ['-L', '-n', cert_nickname])
 
 
 @register_browser
@@ -79,15 +86,16 @@ def _register_firefox(**kwargs):
               default='chrome', show_default=True)
 @click.option('-p', '--profile', metavar="PROFILE",
               default="default", show_default=True)
+@click.option('-c', '--cert-path', metavar="CERTIFICATE_PATH")
 @click.pass_context
-def main(ctx, debug, target, profile):
+def main(ctx, debug, target, profile, cert_path):
     if debug:
         log.setLevel(logging.DEBUG)
         log.debug("Activating DEBUG logging")
 
     browser_fn = browsers_functions.get("_register_{}".format(target))
     if browser_fn:
-        browser_fn(profile=profile)
+        browser_fn(profile=profile, cert_path=cert_path)
     else:
         log.error('Browser %s is not supported', target)
 
