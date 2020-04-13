@@ -13,9 +13,9 @@ loadenv
 
 NETWORK_NAME="${NETWORK_NAME:-traefik}"
 
-# Remove network if it exists
+# Just exit if network does already exists
 docker network ls --format="{{.Name}}" | grep -E "^${NETWORK_NAME}$" \
-    && docker network rm "${NETWORK_NAME}"
+    && exit 0
 
 # Create a fresh new network
 docker network create \
