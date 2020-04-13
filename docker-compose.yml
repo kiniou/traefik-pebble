@@ -7,8 +7,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.toml:/etc/traefik/traefik.toml
+      - ./traefik_dynamic_conf.toml:/etc/traefik/traefik_dynamic_conf.toml
       - ./certs:/certs
-      - ./certs/ca:/usr/local/share/ca-certificates:ro
     ports:
       - "127.0.0.1:${TRAEFIK_PORT_HTTP:-80}:80"
       - "::1:${TRAEFIK_PORT_HTTP:-80}:80"

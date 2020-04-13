@@ -1,11 +1,6 @@
 #!/bin/sh
-
-rm /var/run/acme.json
-
-echo "Waiting for certificate"
-while [ ! -f "/usr/local/share/ca-certificates/cert.pem" ]; do
-    sleep 5
-done;
-update-ca-certificates
+set -e
+# Removing letsencrypt generated cache
+rm /var/run/acme.json || true
 
 exec /entrypoint.sh "$@"

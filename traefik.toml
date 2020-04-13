@@ -1,5 +1,5 @@
 [serversTransport]
-  rootCAs = ["/certs/ca/cert.pem"]
+  rootCAs = ["/certs/rootCA.pem"]
 
 [api]
   insecure = true
@@ -33,3 +33,7 @@
   level = "DEBUG"
 
 [accesslog]
+
+[providers]
+  [providers.file]
+    filename = "/etc/traefik/traefik_dynamic_conf.toml"

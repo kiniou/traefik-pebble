@@ -1,5 +1,6 @@
 [Unit]
 Description="Traefik service"
+ConditionDirectoryNotEmpty=/etc/traefik/certs
 
 [Service]
 WorkingDirectory=/etc/traefik
