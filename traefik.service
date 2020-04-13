@@ -9,6 +9,8 @@ ExecStartPre=-/bin/sh -c scripts/create-traefik-network.sh
 ExecStart=/usr/local/bin/docker-compose up --build
 ExecStartPre=/usr/local/bin/docker-compose pull
 ExecStop=/usr/local/bin/docker-compose down
+Restart=always
+StartLimitIntervalSec=2
 
 [Install]
 WantedBy=default.target
