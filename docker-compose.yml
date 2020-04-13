@@ -28,11 +28,11 @@ services:
     labels:
       # whoami http router config with redirect to https
       - traefik.http.routers.whoami.entrypoints=web
-      - traefik.http.routers.whoami.rule=HostRegexp(`whoami.test`)
+      - traefik.http.routers.whoami.rule=HostRegexp(`whoami.d.test`)
       - traefik.http.routers.whoami.middlewares=whoami-redirectscheme
       - traefik.http.middlewares.whoami-redirectscheme.redirectscheme.scheme=https
       - traefik.http.routers.whoami-https.entrypoints=web-secure
-      - traefik.http.routers.whoami-https.rule=Host(`whoami.test`)
+      - traefik.http.routers.whoami-https.rule=Host(`whoami.d.test`)
       - traefik.http.routers.whoami-https.tls=true
 
 networks:
