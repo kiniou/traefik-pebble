@@ -4,8 +4,6 @@ services:
   traefik:
     build: traefik.docker
     image: traefik:local
-    depends_on:
-      - pebble
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.toml:/etc/traefik/traefik.toml
@@ -20,32 +18,6 @@ services:
       - "::1:${TRAEFIK_PORT_DASHBOARD:-8080}:8080"
     container_name: traefik
     restart: always
-    labels:
-      - traefik.enable=false
-
-  # unbound:
-  #   container_name: unbound
-  #   build: unbound.docker
-  #   image: unbound:local
-  #   ports:
-  #     - "127.0.2.53:53:53/udp"
-  #     - "127.0.2.53:53:53/tcp"
-
-  pebble:
-    image: letsencrypt/pebble:latest
-    container_name: pebble
-    restart: always
-    volumes:
-      - ./certs:/var/pebble/certs
-      - ./pebble.json:/pebble.json
-    ports:
-      - "${PEBBLE_PORT:-127.0.0.1:14000}:14000"
-      - "${PEBBLE_MGMT_PORT:-127.0.0.1:15000}:15000"
-    environment:
-      PEBBLE_VA_ALWAYS_VALID: 1
-      PEBBLE_VA_NOSLEEP: 1
-      PEBBLE_WFE_NONCEREJECT: 0
-    command: pebble -config /pebble.json
     labels:
       - traefik.enable=false
 

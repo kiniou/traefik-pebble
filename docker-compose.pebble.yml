@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  traefik:
+    depends_on:
+      - pebble
+    volumes:
+      - ./certs/minica/pebble/cert.pem:/usr/local/share/ca-certificates/pebble.crt:ro
+
+  pebble:
+    image: letsencrypt/pebble:latest
+    container_name: pebble
+    restart: always
+    volumes:
+      - ./certs:/var/pebble/certs
+      - ./pebble.json:/pebble.json
+    ports:
+      - "${PEBBLE_PORT:-127.0.0.1:14000}:14000"
+      - "${PEBBLE_MGMT_PORT:-127.0.0.1:15000}:15000"
+    environment:
+      PEBBLE_VA_ALWAYS_VALID: 1
+      PEBBLE_VA_NOSLEEP: 1
+      PEBBLE_WFE_NONCEREJECT: 0
+    command: pebble -config /pebble.json
+    labels:
+      - traefik.enable=false
