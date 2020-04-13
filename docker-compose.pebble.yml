@@ -1,12 +1,6 @@
 version: "3.7"
 
 services:
-  traefik:
-    depends_on:
-      - pebble
-    volumes:
-      - ./certs/minica/pebble/cert.pem:/usr/local/share/ca-certificates/pebble.crt:ro
-
   pebble:
     image: letsencrypt/pebble:latest
     container_name: pebble
@@ -24,3 +18,13 @@ services:
     command: pebble -config /pebble.json
     labels:
       - traefik.enable=false
+
+  traefik:
+    depends_on:
+      - pebble
+    volumes:
+      - ./certs/localhost.crt:/usr/local/share/ca-certificates/localhost.crt:ro
+
+  whoami:
+    labels:
+      - traefik.http.routers.whoami-https.tls.certresolver=pebble

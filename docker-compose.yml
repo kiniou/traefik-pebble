@@ -34,7 +34,6 @@ services:
       - traefik.http.routers.whoami-https.entrypoints=web-secure
       - traefik.http.routers.whoami-https.rule=Host(`whoami.test`)
       - traefik.http.routers.whoami-https.tls=true
-      - traefik.http.routers.whoami-https.tls.certresolver=pebble
 
 networks:
   default:
