@@ -28,6 +28,7 @@
 
 
 [providers.docker]
+  exposedByDefault = false
 
 [log]
   level = "DEBUG"

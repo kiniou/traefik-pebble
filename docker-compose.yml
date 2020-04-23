@@ -18,20 +18,30 @@ services:
       - "::1:${TRAEFIK_PORT_DASHBOARD:-8080}:8080"
     container_name: traefik
     labels:
-      - traefik.enable=false
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`traefik.d.test`)"
+      - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.routers.api.entrypoints=web"
+      - "traefik.http.routers.api.middlewares=redirect-to-https"
+      - "traefik.http.routers.api-secure.rule=Host(`traefik.d.test`)"
+      - "traefik.http.routers.api-secure.service=api@internal"
+      - "traefik.http.routers.api-secure.tls=true"
+      - "traefik.http.routers.api-secure.entrypoints=web-secure"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
 
   whoami:
     image: containous/whoami:latest
     container_name: whoami
     labels:
       # whoami http router config with redirect to https
-      - traefik.http.routers.whoami.entrypoints=web
-      - traefik.http.routers.whoami.rule=Host(`whoami.d.test`)
-      - traefik.http.routers.whoami.middlewares=whoami-redirectscheme
-      - traefik.http.middlewares.whoami-redirectscheme.redirectscheme.scheme=https
-      - traefik.http.routers.whoami-https.entrypoints=web-secure
-      - traefik.http.routers.whoami-https.rule=Host(`whoami.d.test`)
-      - traefik.http.routers.whoami-https.tls=true
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.entrypoints=web"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.d.test`)"
+      - "traefik.http.routers.whoami.middlewares=redirect-to-https"
+      - "traefik.http.routers.whoami-secure.entrypoints=web-secure"
+      - "traefik.http.routers.whoami-secure.rule=Host(`whoami.d.test`)"
+      - "traefik.http.routers.whoami-secure.tls=true"
 
 networks:
   default:
