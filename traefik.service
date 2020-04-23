@@ -1,6 +1,10 @@
 [Unit]
 Description="Traefik service"
 ConditionDirectoryNotEmpty=/etc/traefik/certs
+BindsTo=docker.service
+After=docker.service
+Requires=docker.service
+StartLimitIntervalSec=2s
 
 [Service]
 WorkingDirectory=/etc/traefik
@@ -10,7 +14,6 @@ ExecStartPre=/usr/local/bin/docker-compose pull
 ExecStart=/usr/local/bin/docker-compose up --build --remove-orphans
 ExecStop=/usr/local/bin/docker-compose down
 Restart=always
-StartLimitIntervalSec=2
 
 [Install]
 WantedBy=default.target

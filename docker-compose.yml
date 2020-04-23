@@ -17,14 +17,12 @@ services:
       - "127.0.0.1:${TRAEFIK_PORT_DASHBOARD:-8080}:8080"
       - "::1:${TRAEFIK_PORT_DASHBOARD:-8080}:8080"
     container_name: traefik
-    restart: always
     labels:
       - traefik.enable=false
 
   whoami:
     image: containous/whoami:latest
     container_name: whoami
-    restart: always
     labels:
       # whoami http router config with redirect to https
       - traefik.http.routers.whoami.entrypoints=web
