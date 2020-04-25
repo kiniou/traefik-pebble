@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  consul-server:
+    image: consul
+    ports:
+      - 8500:8500
+      - 8600:8600/udp
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.consul.loadbalancer.server.port=8500"
+      - "traefik.http.routers.consul.rule=Host(`consul.d.test`)"
+      - "traefik.http.routers.consul.entrypoints=web"
+      - "traefik.http.routers.consul.middlewares=redirect-to-https"
+      - "traefik.http.routers.consul-secure.rule=Host(`consul.d.test`)"
+      - "traefik.http.routers.consul-secure.tls=true"
+      - "traefik.http.routers.consul-secure.entrypoints=web-secure"
+    command: agent -server -ui -node=consul-server -bootstrap-expect=1 -client=0.0.0.0
+
+  registrator:
+    image: kiniou/registrator:v7
+    depends_on:
+      - consul-server
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    command: -cleanup -internal -resync 1 consul://consul-server:8500
