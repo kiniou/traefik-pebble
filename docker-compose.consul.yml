@@ -23,4 +23,4 @@ services:
       - consul-server
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-    command: -cleanup -internal -resync 1 consul://consul-server:8500
+    command: -cleanup -internal -resync 300 consul://consul-server:8500
