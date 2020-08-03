@@ -16,8 +16,8 @@ services:
       - "::1:${TRAEFIK_PORT_HTTPS:-443}:443"
       - "127.0.0.1:${TRAEFIK_PORT_DASHBOARD:-8080}:8080"
       - "::1:${TRAEFIK_PORT_DASHBOARD:-8080}:8080"
-      - "127.0.0.1:${TRAEFIK_PORT_DASHBOARD:-8022}:22"
-      - "::1:${TRAEFIK_PORT_DASHBOARD:-8022}:22"
+      - "127.0.0.1:${TRAEFIK_PORT_SSH:-8022}:22"
+      - "::1:${TRAEFIK_PORT_SSH:-8022}:22"
     container_name: traefik
     labels:
       - "traefik.enable=true"
