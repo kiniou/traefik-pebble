@@ -3,3 +3,8 @@
     [tls.stores.default.defaultCertificate]
       certFile = "/certs/localhost.crt"
       keyFile = "/certs/localhost.key"
+
+[http.middlewares]
+  [http.middlewares.redirect-to-https.redirectScheme]
+    scheme = "https"
+    permanent = true

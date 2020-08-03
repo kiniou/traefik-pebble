@@ -1,4 +1,8 @@
+[global]
+  insecureSNI = true
+
 [serversTransport]
+  insecureSkipVerify = true
   rootCAs = ["/certs/rootCA.pem"]
 
 [api]
@@ -11,8 +15,12 @@
     address = ":80"
   [entryPoints.web-secure]
     address = ":443"
+    [entryPoints.web-secure.http.tls]
+
   [entryPoints.ssh]
-    address = ":222"
+    address = ":22"
+  [entryPoints.ssh-alt]
+    address = ":2222"
 
 [http.middlewares]
   [http.middlewares.redirect.redirectScheme]
