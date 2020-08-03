@@ -1,26 +1,51 @@
 version: "3.7"
 
 services:
-  consul-server:
+  consul:
     image: consul
+    container_name: consul
     ports:
+      - 8400:8400
       - 8500:8500
       - 8600:8600/udp
+      - 8300:8300
+      - 8301:8301
+      - 8301:8301/udp
+      - 8302:8302
+      - 8302:8302/udp
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.consul.loadbalancer.server.port=8500"
       - "traefik.http.routers.consul.rule=Host(`consul.d.test`)"
-      - "traefik.http.routers.consul.entrypoints=web"
-      - "traefik.http.routers.consul.middlewares=redirect-to-https"
-      - "traefik.http.routers.consul-secure.rule=Host(`consul.d.test`)"
-      - "traefik.http.routers.consul-secure.tls=true"
-      - "traefik.http.routers.consul-secure.entrypoints=web-secure"
-    command: agent -server -ui -node=consul-server -bootstrap-expect=1 -client=0.0.0.0
-
-  registrator:
-    image: kiniou/registrator:v7
-    depends_on:
-      - consul-server
+      - "traefik.http.routers.consul.entrypoints=web,web-secure"
+      - "traefik.http.routers.consul.middlewares=redirect-to-https@file"
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    command: -cleanup -internal -resync 300 consul://consul-server:8500
+      - ./consul.json:/etc/consul.d/server.json:ro
+      - ./consul-entrypoint.sh:/consul-entrypoint.sh:ro
+    environment:
+      - CONSUL_ADVERTISE_IP
+      - CONSUL_ENCRYPT
+    entrypoint: /consul-entrypoint.sh
+    command: -node=consul -bootstrap-expect=3 -retry-join consul1 -retry-join consul2
+
+  consul1:
+    image: consul
+    container_name: consul1
+    volumes:
+      - ./consul.json:/etc/consul.d/server.json:ro
+      - ./consul-entrypoint.sh:/consul-entrypoint.sh:ro
+    environment:
+      - CONSUL_ENCRYPT
+    entrypoint: /consul-entrypoint.sh
+    command: -node=consul1 -retry-join consul -retry-join consul2 -bootstrap-expect=3
+
+  consul2:
+    image: consul
+    container_name: consul2
+    volumes:
+      - ./consul.json:/etc/consul.d/server.json:ro
+      - ./consul-entrypoint.sh:/consul-entrypoint.sh:ro
+    environment:
+      - CONSUL_ENCRYPT
+    entrypoint: /consul-entrypoint.sh
+    command: -node=consul2 -retry-join consul -retry-join consul1 -bootstrap-expect=3

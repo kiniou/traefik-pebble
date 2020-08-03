@@ -38,6 +38,12 @@
 [providers.docker]
   exposedByDefault = false
 
+[providers.consulCatalog]
+  exposedByDefault = false
+  refreshInterval = "10s"
+  [providers.consulCatalog.endpoint]
+    address = "consul.node.consul:8500"
+
 [log]
   level = "DEBUG"
 
