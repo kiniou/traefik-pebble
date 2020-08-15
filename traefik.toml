@@ -1,6 +1,3 @@
-[global]
-  insecureSNI = true
-
 [serversTransport]
   insecureSkipVerify = true
   rootCAs = ["/certs/rootCA.pem"]
