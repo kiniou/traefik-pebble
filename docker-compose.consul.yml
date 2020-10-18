@@ -26,26 +26,4 @@ services:
       - CONSUL_ADVERTISE_IP
       - CONSUL_ENCRYPT
     entrypoint: /consul-entrypoint.sh
-    command: -node=consul -bootstrap-expect=3 -retry-join consul1 -retry-join consul2
-
-  consul1:
-    image: consul
-    container_name: consul1
-    volumes:
-      - ./consul.json:/etc/consul.d/server.json:ro
-      - ./consul-entrypoint.sh:/consul-entrypoint.sh:ro
-    environment:
-      - CONSUL_ENCRYPT
-    entrypoint: /consul-entrypoint.sh
-    command: -node=consul1 -retry-join consul -retry-join consul2 -bootstrap-expect=3
-
-  consul2:
-    image: consul
-    container_name: consul2
-    volumes:
-      - ./consul.json:/etc/consul.d/server.json:ro
-      - ./consul-entrypoint.sh:/consul-entrypoint.sh:ro
-    environment:
-      - CONSUL_ENCRYPT
-    entrypoint: /consul-entrypoint.sh
-    command: -node=consul2 -retry-join consul -retry-join consul1 -bootstrap-expect=3
+    command: -node=consul -bootstrap-expect=1
