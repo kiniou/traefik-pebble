@@ -10,14 +10,10 @@ services:
       - ./traefik_dynamic_conf.toml:/etc/traefik/traefik_dynamic_conf.toml
       - ./certs:/certs
     ports:
-      - "127.0.0.1:${TRAEFIK_PORT_HTTP:-80}:80"
-      - "::1:${TRAEFIK_PORT_HTTP:-80}:80"
-      - "127.0.0.1:${TRAEFIK_PORT_HTTPS:-443}:443"
-      - "::1:${TRAEFIK_PORT_HTTPS:-443}:443"
-      - "127.0.0.1:${TRAEFIK_PORT_DASHBOARD:-8080}:8080"
-      - "::1:${TRAEFIK_PORT_DASHBOARD:-8080}:8080"
-      - "127.0.0.1:${TRAEFIK_PORT_SSH:-8022}:22"
-      - "::1:${TRAEFIK_PORT_SSH:-8022}:22"
+      - "${TRAEFIK_PORT_HTTP:-80}:80"
+      - "${TRAEFIK_PORT_HTTPS:-443}:443"
+      - "${TRAEFIK_PORT_DASHBOARD:-8080}:8080"
+      - "${TRAEFIK_PORT_SSH:-8022}:22"
     container_name: traefik
     labels:
       - "traefik.enable=true"
