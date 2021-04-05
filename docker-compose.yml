@@ -17,7 +17,7 @@ services:
     container_name: traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=Host(`traefik.d.test`)"
+      - "traefik.http.routers.api.rule=Host(`traefik.test`)"
       - "traefik.http.routers.api.service=api@internal"
       - "traefik.http.routers.api.entrypoints=web,web-secure"
       - "traefik.http.routers.api.middlewares=redirect-to-https@file"
@@ -28,7 +28,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.entrypoints=web,web-secure"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.d.test`)"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.test`)"
       - "traefik.http.routers.whoami.middlewares=redirect-to-https@file"
 
 networks:

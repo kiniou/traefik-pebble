@@ -23,26 +23,11 @@
   [http.middlewares.redirect.redirectScheme]
     scheme = "https"
 
-[certificatesResolvers.pebble.acme]
-  email = "test@docker.localhost"
-  storage = "/var/run/acme.json"
-  caServer = "https://pebble:14000/dir"
-  [certificatesResolvers.pebble.acme.httpChallenge]
-    # used during the challenge
-    entryPoint = "web"
-
-
 [providers.docker]
   exposedByDefault = false
 
-[providers.consulCatalog]
-  exposedByDefault = false
-  refreshInterval = "10s"
-  [providers.consulCatalog.endpoint]
-    address = "consul.node.consul:8500"
-
 [log]
-  level = "DEBUG"
+  level = "INFO"
 
 [accesslog]
 
