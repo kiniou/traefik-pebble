@@ -20,5 +20,8 @@ docker network ls --format="{{.Name}}" | grep -E "^${NETWORK_NAME}$" \
 # Create a fresh new network
 docker network create \
        --attachable \
+       --ipv6 \
+       --subnet="172.18.0.0/16" \
+       --subnet="fcdd:1::/48" \
        -o 'com.docker.network.bridge.name'="${NETWORK_NAME}" \
        "${NETWORK_NAME}"
