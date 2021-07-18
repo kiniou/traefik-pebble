@@ -1,4 +1,4 @@
-FROM traefik:2.2.8
+FROM traefik:2.4.8
 
 ADD entrypoint.sh /custom-entrypoint.sh
 
