@@ -6,6 +6,9 @@
   insecure = true
   dashboard = true
 
+[pilot]
+  # disable traefik pilot (SasS) feature
+  dashboard = false
 
 [entryPoints]
   [entryPoints.web]
